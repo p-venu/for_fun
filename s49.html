@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wild Hackers Code Lab</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #00ffcc;
+      font-family: 'Courier New', monospace;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    textarea {
+      width: 100%;
+      height: 400px;
+      background-color: #1a1a1a;
+      color: #00ffcc;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 1rem;
+      margin-top: 20px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      border: none;
+      background-color: #00ffcc;
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    button:hover {
+      background-color: #00ccaa;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Wild Hackers Code Lab</h1>
+
+  <textarea id="codeArea" readonly>
+    import RPi.GPIO as GPIO
+    import time
+    
+    # Set GPIO mode
+    GPIO.setmode(GPIO.BCM)
+    
+    # Define LED pins
+    ledpinOne = 12
+    ledpinTwo = 13
+    
+    # Set up both pins as output
+    GPIO.setup(ledpinOne, GPIO.OUT)
+    GPIO.setup(ledpinTwo, GPIO.OUT)
+    
+    try:
+        while True:
+            GPIO.output(ledpinOne, GPIO.HIGH)  # Turn LED1 ON
+            GPIO.output(ledpinTwo, GPIO.LOW)   # Turn LED2 OFF
+            time.sleep(1)
+    
+            GPIO.output(ledpinOne, GPIO.LOW)   # Turn LED1 OFF
+            GPIO.output(ledpinTwo, GPIO.HIGH)  # Turn LED2 ON
+            time.sleep(1)
+    
+    except KeyboardInterrupt:
+        print("\nProgram stopped by user\n")
+        GPIO.cleanup()
+        exit()
+    
+    # Output:
+    # LED1 and LED2 will blink alternately every 1 second until Ctrl+C is pressed.
+
+    
+
+
+
+
+    import RPi.GPIO as GPIO
+import time
+
+R_LED = 11
+G_LED = 12
+B_LED = 13
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+for x in range(10, 14):
+    GPIO.setup(x, GPIO.OUT)
+
+try:
+    while True:
+        print("Enter one of the following colours:")
+        print("Red | Green | Blue")
+        print("Magenta | Yellow | Cyan")
+        print("White | OFF")
+        
+        colour = input("Enter the colour: ")
+
+        if colour.lower() == "red":
+            GPIO.output(R_LED, GPIO.HIGH)
+            GPIO.output(G_LED, GPIO.LOW)
+            GPIO.output(B_LED, GPIO.LOW)
+
+        elif colour.lower() == "green":
+            GPIO.output(R_LED, GPIO.LOW)
+            GPIO.output(G_LED, GPIO.HIGH)
+            GPIO.output(B_LED, GPIO.LOW)
+
+        elif colour.lower() == "blue":
+            GPIO.output(R_LED, GPIO.LOW)
+            GPIO.output(G_LED, GPIO.LOW)
+            GPIO.output(B_LED, GPIO.HIGH)
+
+        elif colour.lower() == "magenta":
+            GPIO.output(R_LED, GPIO.HIGH)
+            GPIO.output(G_LED, GPIO.LOW)
+            GPIO.output(B_LED, GPIO.HIGH)
+
+        elif colour.lower() == "yellow":
+            GPIO.output(R_LED, GPIO.HIGH)
+            GPIO.output(G_LED, GPIO.HIGH)
+            GPIO.output(B_LED, GPIO.LOW)
+
+        elif colour.lower() == "cyan":
+            GPIO.output(R_LED, GPIO.LOW)
+            GPIO.output(G_LED, GPIO.HIGH)
+            GPIO.output(B_LED, GPIO.HIGH)
+
+        elif colour.lower() == "white":
+            GPIO.output(R_LED, GPIO.HIGH)
+            GPIO.output(G_LED, GPIO.HIGH)
+            GPIO.output(B_LED, GPIO.HIGH)
+
+        elif colour.lower() == "off":
+            GPIO.output(R_LED, GPIO.LOW)
+            GPIO.output(G_LED, GPIO.LOW)
+            GPIO.output(B_LED, GPIO.LOW)
+
+        else:
+            print("Invalid Option... Enter again")
+
+except KeyboardInterrupt:
+    print("\nExiting program\n")
+    GPIO.cleanup()
+    exit()
+
+
+
+
+
+
+
+
+    import RPi.GPIO as GPIO
+import time
+
+ledPin = 18
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(ledPin, GPIO.OUT)
+
+pwm = GPIO.PWM(ledPin, 100)  # Set PWM on ledPin at 100Hz
+pwm.start(0)  # Start PWM with 0% duty cycle
+
+try:
+    while True:
+        # Increasing brightness
+        for i in range(100):
+            pwm.ChangeDutyCycle(i)
+            time.sleep(0.2)
+        
+        # Decreasing brightness
+        for i in range(100, 0, -1):
+            pwm.ChangeDutyCycle(i)
+            time.sleep(0.2)
+
+except KeyboardInterrupt:
+    pwm.stop()
+    print("\nExiting program\n")
+    GPIO.cleanup()
+    exit()
+
+
+
+
+
+
+
+
+
+    import RPi.GPIO as GPIO
+import time
+
+trigPin = 15
+echoPin = 14
+relayPin = 26
+
+def distance():
+    GPIO.output(trigPin, True)
+    time.sleep(0.00001)
+    GPIO.output(trigPin, False)
+
+    while GPIO.input(echoPin) == 0:
+        pulse_start = time.time()
+
+    while GPIO.input(echoPin) == 1:
+        pulse_end = time.time()
+
+    try:
+        pulse_duration = pulse_end - pulse_start
+    except:
+        print("Calibrating")
+        return 2000
+
+    distance = pulse_duration * 17150
+    distance = round(distance + 1.15, 2)
+
+    return distance
+
+def main():
+    GPIO.setmode(GPIO.BCM)
+
+    # Set GPIO direction (IN / OUT)
+    GPIO.setup(relayPin, GPIO.OUT)
+    GPIO.setup(trigPin, GPIO.OUT)
+    GPIO.setup(echoPin, GPIO.IN)
+
+    prevDist = 10  # Arbitrary initial value
+
+    try:
+        while True:
+            dist = distance()
+            print("Measured Distance = {} cm".format(dist))
+
+            if abs(dist - prevDist) > 50:
+                prevDist = dist
+                continue
+
+            if dist > 50:
+                GPIO.output(relayPin, GPIO.HIGH)
+            else:
+                GPIO.output(relayPin, GPIO.LOW)
+
+            time.sleep(0.5)
+            prevDist = dist
+
+    except KeyboardInterrupt:
+        print("\nExiting program\n")
+        GPIO.cleanup()
+        exit()
+
+main()
+
+
+
+
+
+
+
+
+import paho.mqtt.client as mqtt
+import RPi.GPIO as GPIO
+
+relayPin = 26
+
+GPIO.setmode(GPIO.BCM)  # Using BCM numbering
+GPIO.setup(relayPin, GPIO.OUT)
+
+# When connected to the MQTT broker
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code", str(rc))
+    client.subscribe("IOTIF/RPI")
+
+# When a message is received
+def on_message(client, userdata, message):
+    data = str(message.payload.decode("utf-8")).strip()
+    print("Data received on topic:", message.topic, " | Message:", data)
+
+    if data.upper() == "ON":
+        GPIO.output(relayPin, True)
+        print("Relay On")
+    elif data.upper() == "OFF":
+        GPIO.output(relayPin, False)
+        print("Relay Off")
+    else:
+        print("Invalid command. Try sending ON or OFF")
+
+# MQTT client setup
+client = mqtt.Client()
+client.connect("broker.hivemq.com")
+
+client.on_connect = on_connect
+client.on_message = on_message
+
+try:
+    client.loop_forever()
+except KeyboardInterrupt:
+    print("\nExiting the program\n")
+    GPIO.cleanup()
+    exit()
+
+
+
+
+
+
+    import RPi.GPIO as GPIO
+import paho.mqtt.client as mqtt
+import Adafruit_DHT
+import time
+
+publishTopic = "IOTIF/RPI/DHT"
+sensor = Adafruit_DHT.DHT11
+sensorPin = 26
+
+# Callback when connected to MQTT broker
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code", str(rc))
+
+# MQTT client setup
+client = mqtt.Client()
+client.connect("broker.hivemq.com")
+client.on_connect = on_connect
+
+try:
+    while True:
+        humidity, temperature = Adafruit_DHT.read_retry(sensor, sensorPin)
+
+        if humidity is not None and temperature is not None:
+            msg = "{},{}".format(humidity, temperature)
+            client.publish(publishTopic, msg)
+            print("Published:", msg)#not in code
+
+        client.loop()
+        time.sleep(5)
+
+except KeyboardInterrupt:
+    print("\nExiting the program\n")
+    GPIO.cleanup()
+    exit()
+
+
+
+
+
+
+
+
+    import paho.mqtt.client as mqtt
+import RPi.GPIO as GPIO
+
+ledPin = 6
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(ledPin, GPIO.OUT)
+
+pwm = GPIO.PWM(ledPin, 100)  # 100Hz frequency
+pwm.start(0)
+pwm.ChangeDutyCycle(100)
+
+# MQTT connect callback
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code", str(rc))
+    client.subscribe("TOTIF/RPi/PWM")
+
+# MQTT message callback
+def on_message(client, userdata, message):
+    data = str(message.payload.decode("utf-8")).strip()
+    print("Data received on topic:", message.topic, "- Message:", data)
+    pwm.ChangeDutyCycle(int(data))
+
+# MQTT client setup
+client = mqtt.Client()
+client.connect("broker.hivemq.com")
+
+client.on_connect = on_connect
+client.on_message = on_message
+
+try:
+    client.loop_forever()
+except KeyboardInterrupt:
+    print("\nExiting the program\n")
+    GPIO.cleanup()
+    exit()
+
+
+
+
+
+
+
+
+
+    import RPi.GPIO as GPIO
+    import time
+    
+    GPIO.setmode(GPIO.BCM)
+    
+    ledPinOne = 12
+    ledPinTwo = 13
+    ledPinThree = 10
+    ledPinFour = 11
+    
+    GPIO.setup(ledPinOne, GPIO.OUT)
+    GPIO.setup(ledPinTwo, GPIO.OUT)
+    GPIO.setup(ledPinThree, GPIO.OUT)
+    GPIO.setup(ledPinFour, GPIO.OUT)
+    
+    try:
+        while True:
+            option = int(input("Enter 1/2/3/4/5: "))
+    
+            if option == 1:
+                GPIO.output(ledPinOne, GPIO.HIGH)
+                GPIO.output(ledPinTwo, GPIO.LOW)
+                GPIO.output(ledPinThree, GPIO.LOW)
+                GPIO.output(ledPinFour, GPIO.LOW)
+    
+            elif option == 2:
+                GPIO.output(ledPinOne, GPIO.LOW)
+                GPIO.output(ledPinTwo, GPIO.HIGH)
+                GPIO.output(ledPinThree, GPIO.LOW)
+                GPIO.output(ledPinFour, GPIO.LOW)
+    
+            elif option == 3:
+                GPIO.output(ledPinOne, GPIO.LOW)
+                GPIO.output(ledPinTwo, GPIO.LOW)
+                GPIO.output(ledPinThree, GPIO.HIGH)
+                GPIO.output(ledPinFour, GPIO.LOW)
+    
+            elif option == 4:
+                GPIO.output(ledPinOne, GPIO.LOW)
+                GPIO.output(ledPinTwo, GPIO.LOW)
+                GPIO.output(ledPinThree, GPIO.LOW)
+                GPIO.output(ledPinFour, GPIO.HIGH)
+    
+            elif option == 5:
+                GPIO.output(ledPinOne, GPIO.HIGH)
+                GPIO.output(ledPinTwo, GPIO.HIGH)
+                GPIO.output(ledPinThree, GPIO.HIGH)
+                GPIO.output(ledPinFour, GPIO.HIGH)
+    
+            else:
+                print("Invalid Input. Try again.")
+    
+    except KeyboardInterrupt:
+        print("\nExiting program\n")
+        GPIO.cleanup()
+        exit()
+
+        
+
+
+
+
+
+
+
+        import RPi.GPIO as GPIO
+import time
+
+def ledPatternOne():
+    for i in range(10, 14):
+        GPIO.output(i, GPIO.HIGH)
+        time.sleep(1)
+    for i in range(10, 14):
+        GPIO.output(i, GPIO.LOW)
+        time.sleep(1)
+
+def ledPatternTwo():
+    for i in range(10, 14):
+        GPIO.output(i, GPIO.HIGH)
+        time.sleep(1)
+        GPIO.output(i, GPIO.LOW)
+        time.sleep(1)
+
+def ledPatternThree():
+    for i in range(13, 9, -1):
+        GPIO.output(i, GPIO.HIGH)
+        time.sleep(1)
+    for i in range(13, 9, -1):
+        GPIO.output(i, GPIO.LOW)
+        time.sleep(1)
+
+def ledPatternFour():
+    for i in range(10, 14, 2):
+        GPIO.output(i, GPIO.HIGH)
+        time.sleep(1)
+    for i in range(11, 14, 2):
+        GPIO.output(i, GPIO.HIGH)
+        time.sleep(1)
+    for i in range(10, 14, 2):
+        GPIO.output(i, GPIO.LOW)
+        time.sleep(1)
+    for i in range(11, 14, 2):
+        GPIO.output(i, GPIO.LOW)
+        time.sleep(1)
+
+def main():
+    GPIO.setmode(GPIO.BCM)
+    for i in range(10, 14):
+        GPIO.setup(i, GPIO.OUT)
+        GPIO.output(i, GPIO.LOW)
+
+    try:
+        while True:
+            n = input("Enter 1/2/3/4 for different LED patterns: ")
+            if n == '1':
+                ledPatternOne()
+            elif n == '2':
+                ledPatternTwo()
+            elif n == '3':
+                ledPatternThree()
+            elif n == '4':
+                ledPatternFour()
+            else:
+                print("Invalid entry")
+
+    except KeyboardInterrupt:
+        print("\nExiting the program\n")
+        GPIO.cleanup()
+        exit()
+
+main()
+
+  </textarea>
+
+  <div class="controls">
+    <button onclick="copyCode()">📋 Copy Code</button>
+  </div>
+
+  <script>
+    function copyCode() {
+      const codeArea = document.getElementById("codeArea");
+      codeArea.select();
+      codeArea.setSelectionRange(0, 99999); // For mobile compatibility
+      navigator.clipboard.writeText(codeArea.value);
+    }
+  </script>
+
+</body>
+</html>
